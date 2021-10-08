@@ -36,12 +36,13 @@ class Rocket:
         self.height = height
         self.rocket_rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.mass = float(3000)
-        self.com = (self.width/2, self.height/2)
-        self.angle = float(0)
+        self.angle = float(90)
+        self.com = (self.width/2, self.height/1.5)
+        self.omega = float(0)
         self.v_y = float(0)
         self.v_x = float(0)
         self.thrust = float(30000)
-        self.thrust_angle = float(math.radians(6))
+        self.thrust_angle = float(math.radians(self.angle)+math.radians(0))
         self.rapid_unscheduled_disassembly = False
 
 
@@ -58,7 +59,7 @@ class Rocket:
         d = self.height - self.com[1]
         torque = -(d * self.thrust * math.sin(self.thrust_angle))
         alpha = torque/inertia
-        self.angle += alpha * time
+        self.omega += alpha * time
         return None
 
 def draw_window(rocket, time):
@@ -66,8 +67,8 @@ def draw_window(rocket, time):
 #    print(f"v_x: {rocket.v_x}, v_y: {rocket.v_y}")
 #    print(f"x: {pos_x}, y: {pos_y}")
     WIN.fill(background)
-    WIN.blit(rocket.img, (pos_x, pos_y))
-    pygame.draw.circle(WIN, (255, 0, 0), (pos_x+rocket.com[0], pos_y+rocket.com[1]), 4)
+    WIN.blit(pygame.transform.rotate(rocket.img, rocket.angle), (pos_x, pos_y))
+    pygame.draw.circle(rocket.img, (255, 0, 0), (rocket.com[0], rocket.com[1]), 4)
 #    print(f"com: {pos_x+rocket.com[0], pos_y+rocket.com[1]}")
     pygame.display.update()
 
