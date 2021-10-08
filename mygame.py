@@ -12,7 +12,7 @@ import math
 # window and refresh rate
 WIDTH, HEIGHT = 900, 1000
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-FPS = 3
+FPS = 60
 #rocket initial position
 ROCKET_X = 450
 ROCKET_Y = 25
@@ -41,13 +41,13 @@ class Rocket:
         self.v_y = float(0)
         self.v_x = float(0)
         self.thrust = float(30000)
-        self.thrust_angle = float(math.radians(0))
+        self.thrust_angle = float(math.radians(6))
         self.rapid_unscheduled_disassembly = False
 
 
     def position(self, time):
-        self.v_y += ((-self.thrust/self.mass * math.cos(self.thrust_angle)) + 9.8) * time
-        self.v_x += (-self.thrust/self.mass*math.sin(self.thrust_angle)) * time
+        self.v_y = ((-self.thrust/self.mass * math.cos(self.thrust_angle)) + 9.8) * time
+        self.v_x = (-self.thrust/self.mass*math.sin(self.thrust_angle)) * time
         self.x += self.v_x * time + (1/2) * ((-self.thrust/self.mass) * math.sin(self.thrust_angle)) * time**2
         self.y += (self.v_y * time + (1/2) * ((-self.thrust/self.mass) * math.cos(self.thrust_angle) + 9.8) * time**2)
         return self.x, self.y
@@ -64,11 +64,11 @@ class Rocket:
 def draw_window(rocket, time):
     pos_x, pos_y = rocket.position(time)
 #    print(f"v_x: {rocket.v_x}, v_y: {rocket.v_y}")
-    print(f"x: {pos_x}, y: {pos_y}")
+#    print(f"x: {pos_x}, y: {pos_y}")
     WIN.fill(background)
     WIN.blit(rocket.img, (pos_x, pos_y))
     pygame.draw.circle(WIN, (255, 0, 0), (pos_x+rocket.com[0], pos_y+rocket.com[1]), 4)
-    print(f"com: {pos_x+rocket.com[0], pos_y+rocket.com[1]}")
+#    print(f"com: {pos_x+rocket.com[0], pos_y+rocket.com[1]}")
     pygame.display.update()
 
 
